@@ -1401,7 +1401,7 @@ void compute_ecnt_mean(const ECNTInfo *ecnt_info, int n,
 //
 ////////////////////////////////////////////////////////////////////////
 
-void compute_aggregated_seeps(const PairDataPoint *pd, SeepsAggScore *seeps_agg) {
+void compute_aggregated_seeps(const PairDataPoint *pd, SeepsAggScore *seeps) {
    static const char *method_name = "compute_seeps_agg() -> ";
 
    //
@@ -1469,7 +1469,7 @@ void compute_aggregated_seeps(const PairDataPoint *pd, SeepsAggScore *seeps_agg)
       weighted_score = 0.;
       for (int i=0; i<SEEPS_MATRIX_SIZE; i++) pvf[i] = 0.;
 
-      compute_seeps_density_vector(pd, seeps_agg, density_vector);
+      compute_seeps_density_vector(pd, seeps, density_vector);
       int density_cnt = density_vector.size();
       if(density_cnt > count) density_cnt = count;
 
@@ -1518,16 +1518,16 @@ void compute_aggregated_seeps(const PairDataPoint *pd, SeepsAggScore *seeps_agg)
       density_vector.clear();
 
       seeps_mprs.clear();
-      seeps_agg->mean_obs = weight_obs_sum;
-      seeps_agg->mean_fcst = weight_fcst_sum;
+      seeps->mean_obs = weight_obs_sum;
+      seeps->mean_fcst = weight_fcst_sum;
 
       // The weight for odfl to ohfl come from climo file
-      seeps_agg->pv1 = pvf[0] + pvf[3] + pvf[6];    // sum by column for obs
-      seeps_agg->pv2 = pvf[1] + pvf[4] + pvf[7];    // sum by column for obs
-      seeps_agg->pv3 = pvf[2] + pvf[5] + pvf[8];    // sum by column for obs
-      seeps_agg->pf1 = pvf[0] + pvf[1] + pvf[2];    // sum by row for forecast
-      seeps_agg->pf2 = pvf[3] + pvf[4] + pvf[5];    // sum by row for forecast
-      seeps_agg->pf3 = pvf[6] + pvf[7] + pvf[8];    // sum by row for forecast
+      seeps->pv1 = pvf[0] + pvf[3] + pvf[6];    // sum by column for obs
+      seeps->pv2 = pvf[1] + pvf[4] + pvf[7];    // sum by column for obs
+      seeps->pv3 = pvf[2] + pvf[5] + pvf[8];    // sum by column for obs
+      seeps->pf1 = pvf[0] + pvf[1] + pvf[2];    // sum by row for forecast
+      seeps->pf2 = pvf[3] + pvf[4] + pvf[5];    // sum by row for forecast
+      seeps->pf3 = pvf[6] + pvf[7] + pvf[8];    // sum by row for forecast
       seeps->s_odfl = svf[3];
       seeps->s_odfh = svf[6];
       seeps->s_olfd = svf[1];
